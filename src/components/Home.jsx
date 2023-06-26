@@ -4,38 +4,63 @@ import { useEffect, useState } from "react";
 import "./styles.css";
 
 export default function Home() {
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(2);
   const [products, setProducts] = useState([]);
+  const [totalPages, setTotalPages] = useState(0);
 
   useEffect(() => {
     async function fetchProducts() {
       const { data } = await axios.get(
-        "https://dummyjson.com/products?limit=100"
+        `https://dummyjson.com/products?limit=10&skip=${page * 10 - 10}`
       );
-      console.log("called");
       setProducts(data.products);
-      console.log(products);
+      setTotalPages(data.total / 10);
+      console.log(products, data.total);
     }
     fetchProducts();
-  }, []);
+  }, [page]);
+
+  const handlePageHandler = (selectedPage) => {
+    if (
+      selectedPage >= 1 &&
+      selectedPage <= totalPages &&
+      selectedPage !== page
+    ) {
+      setPage(selectedPage);
+    }
+  };
 
   return (
     <div>
       <div className="product_container">
-        {products.slice(page * 10 - 10, page * 10).map((product) => (
+        {products.map((product) => (
           <SingleProduct key={product.id} product={product} />
         ))}
       </div>
       <div className="page_nums">
-        {page === 1 ? "" : <div>Prev</div>}
+        <div
+          onClick={() => handlePageHandler(page - 1)}
+          className={page !== 1 ? "" : "product_disabled"}
+        >
+          Prev
+        </div>
         <div>
-          {[...Array(products.length / 10)].map((_, i) => (
-            <span key={i} onClick={() => setPage(i + 1)}>
+          {[...Array(totalPages)].map((_, i) => (
+            <span
+              key={i}
+              onClick={() => handlePageHandler(i + 1)}
+              className={page === i + 1 ? "page_selected" : ""}
+            >
               {i + 1}
             </span>
           ))}
         </div>
-        {page === 10 ? "" : <div>Next</div>}
+        <div
+          onClick={() => handlePageHandler(page + 1)}
+          className={page !== totalPages ? "" : "product_disabled"}
+        >
+          Next
+        </div>
       </div>
     </div>
   );

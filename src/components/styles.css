@@ -44,8 +44,15 @@
   padding: 13px;
 }
 
+.page_selected {
+  background-color: lightgray;
+}
 /* .page_nums div > span {
   cursor: pointer;
   border: 1px solid grey;
   padding: 13px;
 } */
+.product_disabled {
+  opacity: 0;
+  /* background-color: red; */
+}
