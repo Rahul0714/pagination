@@ -49,3 +49,10 @@
   border: 1px solid grey;
   padding: 13px;
 } */
+.product_disabled {
+  opacity: 0;
+}
+
+.product_highlight {
+  background-color: lightgray;
+}

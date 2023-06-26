@@ -8,6 +8,7 @@ export default function componentName({ product }) {
             width: "15rem",
             borderRadius: "7px",
             boxShadow: "7px 7px 7px black",
+            objectFit: "cover",
           }}
           src={product.thumbnail}
           alt={product.title}

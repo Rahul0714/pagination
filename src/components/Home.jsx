@@ -19,6 +19,16 @@ export default function Home() {
     fetchProducts();
   }, []);
 
+  const handleHandler = (selectedPage) => {
+    if (
+      selectedPage >= 1 &&
+      selectedPage <= products.length / 10 &&
+      selectedPage != page
+    ) {
+      setPage(selectedPage);
+    }
+  };
+
   return (
     <div>
       <div className="product_container">
@@ -27,15 +37,29 @@ export default function Home() {
         ))}
       </div>
       <div className="page_nums">
-        {page === 1 ? "" : <div>Prev</div>}
+        <div
+          onClick={() => handleHandler(page - 1)}
+          className={page === 1 ? "product_disabled" : ""}
+        >
+          Prev
+        </div>
         <div>
           {[...Array(products.length / 10)].map((_, i) => (
-            <span key={i} onClick={() => setPage(i + 1)}>
+            <span
+              key={i}
+              onClick={() => handleHandler(i + 1)}
+              className={page === i + 1 ? "product_highlight" : ""}
+            >
               {i + 1}
             </span>
           ))}
         </div>
-        {page === 10 ? "" : <div>Next</div>}
+        <div
+          onClick={() => handleHandler(page + 1)}
+          className={page === products.length / 10 ? "product_disabled" : ""}
+        >
+          Next
+        </div>
       </div>
     </div>
   );
